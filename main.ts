@@ -144,20 +144,33 @@ const playerTwo = createPlayer(info.player2);
 playerTwo.right = screen.width - PADDING_FROM_WALL;
 controller.player2.moveSprite(playerTwo, 0, PADDLE_SPEED);
 
+const ball = sprites.create(BALL_IMAGE.clone(), SpriteKind.Enemy);
 createBall();
 
-const a = sprites.create(A_IMAGE.clone(), SpriteKind.Enemy);
-const b = sprites.create(B_IMAGE.clone(), SpriteKind.Enemy);
-const c = sprites.create(C_IMAGE.clone(), SpriteKind.Enemy);
-const d = sprites.create(D_IMAGE.clone(), SpriteKind.Enemy);
-const e = sprites.create(E_IMAGE.clone(), SpriteKind.Enemy);
-const n = sprites.create(N_IMAGE.clone(), SpriteKind.Enemy);
-const o = sprites.create(O_IMAGE.clone(), SpriteKind.Enemy);
-const u = sprites.create(U_IMAGE.clone(), SpriteKind.Enemy);
-const t = sprites.create(T_IMAGE.clone(), SpriteKind.Enemy);
-const h = sprites.create(H_IMAGE.clone(), SpriteKind.Enemy);
+let initSpace = (10, 10);
+let spacing = 15;
+let initSpeed = (10, 10);
 
-addLetters();
+const aSprite = sprites.create(A_IMAGE.clone(), SpriteKind.Enemy);
+const aLetter = new Letter(aSprite, initSpace + spacing, initSpeed, 2);
+const bSprite = sprites.create(B_IMAGE.clone(), SpriteKind.Enemy);
+const bLetter = new Letter(bSprite, initSpace + (spacing * 2), initSpeed + 15, 7);
+const cSprite = sprites.create(C_IMAGE.clone(), SpriteKind.Enemy);
+const cLetter = new Letter(cSprite, initSpace + (spacing * 3), initSpeed + 10, 7);
+const dSprite = sprites.create(D_IMAGE.clone(), SpriteKind.Enemy);
+const dLetter = new Letter(dSprite, initSpace + (spacing * 4), initSpeed + 20, 2);
+const eSprite = sprites.create(E_IMAGE.clone(), SpriteKind.Enemy);
+const eLetter = new Letter(eSprite, initSpace + (spacing * 5), initSpeed + 30, 7);
+const nSprite = sprites.create(N_IMAGE.clone(), SpriteKind.Enemy);
+const nLetter = new Letter(nSprite, initSpace + (spacing * 6), initSpeed + 25, 7);
+const oSprite = sprites.create(O_IMAGE.clone(), SpriteKind.Enemy);
+const oLetter = new Letter(oSprite, initSpace + (spacing * 7), initSpeed + 10, 7);
+const uSprite = sprites.create(U_IMAGE.clone(), SpriteKind.Enemy);
+const uLetter = new Letter(uSprite, initSpace + (spacing * 8), initSpeed + 1, 7);
+const tSprite = sprites.create(T_IMAGE.clone(), SpriteKind.Enemy);
+const tLetter = new Letter(tSprite, initSpace + (spacing * 9), initSpeed + 24, 2);
+const hSprite = sprites.create(H_IMAGE.clone(), SpriteKind.Enemy);
+const hLetter = new Letter(hSprite, initSpace + (spacing * 10), initSpeed + 40, 2);
 
 function createPlayer(player: info.PlayerInfo) {
     const output = sprites.create(image.create(3, 18), SpriteKind.Player);
@@ -172,7 +185,6 @@ function createPlayer(player: info.PlayerInfo) {
 }
 
 function createBall() {
-    let ball = sprites.create(BALL_IMAGE.clone(), SpriteKind.Enemy);
     ball.vy = randint(-20, 20);
     ball.vx = 60 * (Math.percentChance(50) ? 1 : -1);
 }
@@ -219,6 +231,36 @@ game.onUpdate(function () {
             }
         }
         );
+    if (ball.overlapsWith(aSprite)) {
+        aLetter.impacted(aSprite, ball);
+    }
+    if (ball.overlapsWith(bSprite)) {
+        bLetter.impacted(bSprite, ball);
+    }
+    if (ball.overlapsWith(cSprite)) {
+        cLetter.impacted(cSprite, ball);
+    }
+    if (ball.overlapsWith(dSprite)) {
+        dLetter.impacted(dSprite, ball);
+    }
+    if (ball.overlapsWith(eSprite)) {
+        eLetter.impacted(eSprite, ball);
+    }
+    if (ball.overlapsWith(nSprite)) {
+        nLetter.impacted(nSprite, ball);
+    }
+    if (ball.overlapsWith(oSprite)) {
+        oLetter.impacted(oSprite, ball);
+    }
+    if (ball.overlapsWith(uSprite)) {
+        uLetter.impacted(uSprite, ball);
+    }
+    if (ball.overlapsWith(tSprite)) {
+        tLetter.impacted(tSprite, ball);
+    }
+    if (ball.overlapsWith(hSprite)) {
+        hLetter.impacted(hSprite, ball);
+    }
 });
 
 game.onShade(function () {
@@ -264,71 +306,6 @@ function removeBall(player: info.PlayerInfo) {
         player.changeScoreBy(-2);
     }
 }
-
-function addLetters() {
-    let prevSpace = (10,10);
-    let spacing = 15;
-    let initSpeed = (10,10);
-
-    a.left = prevSpace;
-    a.vy = initSpeed;
-
-    b.left = prevSpace + spacing;
-    prevSpace = b.left;
-    b.vy = initSpeed + 15;
-
-    c.left = prevSpace + spacing;
-    prevSpace = c.left;
-    c.vy = initSpeed + 10;
-
-    d.left = prevSpace + spacing;
-    prevSpace = d.left;
-    d.vy = initSpeed + 20;
-
-    e.left = prevSpace + spacing;
-    prevSpace = e.left;
-    e.vy = initSpeed + 30;
-
-    n.left = prevSpace + spacing;
-    prevSpace = n.left;
-    n.vy = initSpeed + 25;
-
-    o.left = prevSpace + spacing;
-    prevSpace = o.left;
-    o.vy = initSpeed + 10;
-
-    u.left = prevSpace + spacing;
-    prevSpace = u.left;
-    u.vy = initSpeed + 1;
-
-    t.left = prevSpace + spacing;
-    prevSpace = t.left;
-    t.vy = initSpeed + 24;
-
-    h.left = prevSpace + spacing;
-    prevSpace = h.left;
-    h.vy = initSpeed + 40;
-}
-
-//sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Enemy, handleLetterHit);
-
-//TODO This isn't working properly, debugging rn
-// function handleLetterHit(letter: Sprite, ball: Sprite) {
-//     //ashes effect
-//     ball.startEffect(effects.ashes, 150);
-//     letter.startEffect(effects.ashes, 100);
-
-//     if (letter = (b || c || e || n || o || u)) {
-//         letter.image.replace(1, 7);
-//     }
-
-//     if (letter = (a || d || t || h)) {
-//         letter.image.replace(1,2);
-//     }
-
-//     // time out this event so it doesn't retrigger on the same collision
-//     pause(500);
-// }
 
 game.onUpdate(function () {
     const currTime = game.runtime();
