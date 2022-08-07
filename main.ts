@@ -9,6 +9,116 @@ const BALL_IMAGE = img`
     . e d d d d d d e .
     . . e e e e e e . .
 `;
+const A_IMAGE = img`
+    . . . . 1 1 . . . .
+    . . . 1 1 1 1 . . .
+    . . . 1 . . 1 . . .
+    . . 1 1 . . 1 1 . .
+    . . 1 1 . . 1 1 . .
+    . 1 1 1 1 1 1 1 1 .
+    . 1 . . . . . . 1 .
+    1 1 . . . . . . 1 1
+    1 1 . . . . . . 1 1
+`;
+const B_IMAGE = img`
+    1 1 1 1 1 . . . . .
+    1 . . . 1 1 . . . .
+    1 . . . . 1 . . . .
+    1 . . . 1 1 . . . .
+    1 1 1 1 1 . . . . .
+    1 . . . 1 1 . . . .
+    1 . . . . 1 . . . .
+    1 . . . 1 1 . . . .
+    1 1 1 1 1 . . . . .
+`;
+const C_IMAGE = img`
+    . . 1 1 1 1 1 1 . .
+    . . 1 . . . . . . .
+    . 1 . . . . . . . .
+    . 1 . . . . . . . .
+    . 1 . . . . . . . .
+    . 1 . . . . . . . .
+    . 1 . . . . . . . .
+    . 1 1 . . . . . . .
+    . . 1 1 1 1 1 1 . .
+`;
+const D_IMAGE = img`
+    1 1 1 1 . . . . . .
+    1 . . . 1 1 . . . .
+    1 . . . . . 1 . . .
+    1 . . . . . . 1 . .
+    1 . . . . . . 1 . .
+    1 . . . . . . 1 . .
+    1 . . . . . 1 . . .
+    1 . . . 1 1 . . . .
+    1 1 1 1 . . . . . .
+`;
+const E_IMAGE = img`
+    . 1 1 1 1 1 1 1 1 .
+    . 1 . . . . . . . .
+    . 1 . . . . . . . .
+    . 1 . . . . . . . .
+    . 1 1 1 1 1 1 . . .
+    . 1 . . . . . . . .
+    . 1 . . . . . . . .
+    . 1 . . . . . . . .
+    . 1 1 1 1 1 1 1 1 .
+`;
+const N_IMAGE = img`
+    1 1 . . . . . . . 1
+    1 1 1 . . . . . . 1
+    1 . 1 1 . . . . . 1
+    1 . . 1 1 . . . . 1
+    1 . . . 1 1 . . . 1
+    1 . . . . 1 1 . . 1
+    1 . . . . . 1 1 . 1
+    1 . . . . . . 1 1 1
+    1 . . . . . . . 1 1
+`;
+const O_IMAGE = img`
+    . . 1 1 1 1 1 1 . .
+    . 1 1 . . . . 1 1 .
+    1 1 . . . . . . 1 1
+    1 . . . . . . . . 1
+    1 . . . . . . . . 1
+    1 . . . . . . . . 1
+    1 1 . . . . . . 1 1
+    . 1 1 . . . . 1 1 .
+    . . 1 1 1 1 1 1 . .
+`;
+const U_IMAGE = img`
+    . 1 . . . . . . 1 .
+    . 1 . . . . . . 1 .
+    . 1 . . . . . . 1 .
+    . 1 . . . . . . 1 .
+    . 1 . . . . . . 1 .
+    . 1 . . . . . . 1 .
+    . 1 . . . . . . 1 .
+    . 1 1 . . . . 1 1 .
+    . . 1 1 1 1 1 1 . .
+`;
+const T_IMAGE = img`
+    . 1 1 1 1 1 1 1 . .
+    . . . . 1 . . . . .
+    . . . . 1 . . . . .
+    . . . . 1 . . . . .
+    . . . . 1 . . . . .
+    . . . . 1 . . . . .
+    . . . . 1 . . . . .
+    . . . . 1 . . . . .
+    . . . . 1 . . . . .
+`;
+const H_IMAGE = img`
+    . 1 . . . . . . 1 .
+    . 1 . . . . . . 1 .
+    . 1 . . . . . . 1 .
+    . 1 . . . . . . 1 .
+    . 1 1 1 1 1 1 1 1 .
+    . 1 . . . . . . 1 .
+    . 1 . . . . . . 1 .
+    . 1 . . . . . . 1 .
+    . 1 . . . . . . 1 .
+`;
 
 const PADDLE_SPEED = 150;
 const PADDING_FROM_WALL = 3;
@@ -35,6 +145,19 @@ playerTwo.right = screen.width - PADDING_FROM_WALL;
 controller.player2.moveSprite(playerTwo, 0, PADDLE_SPEED);
 
 createBall();
+
+const a = sprites.create(A_IMAGE.clone(), SpriteKind.Enemy);
+const b = sprites.create(B_IMAGE.clone(), SpriteKind.Enemy);
+const c = sprites.create(C_IMAGE.clone(), SpriteKind.Enemy);
+const d = sprites.create(D_IMAGE.clone(), SpriteKind.Enemy);
+const e = sprites.create(E_IMAGE.clone(), SpriteKind.Enemy);
+const n = sprites.create(N_IMAGE.clone(), SpriteKind.Enemy);
+const o = sprites.create(O_IMAGE.clone(), SpriteKind.Enemy);
+const u = sprites.create(U_IMAGE.clone(), SpriteKind.Enemy);
+const t = sprites.create(T_IMAGE.clone(), SpriteKind.Enemy);
+const h = sprites.create(H_IMAGE.clone(), SpriteKind.Enemy);
+
+addLetters();
 
 function createPlayer(player: info.PlayerInfo) {
     const output = sprites.create(image.create(3, 18), SpriteKind.Player);
@@ -141,6 +264,71 @@ function removeBall(player: info.PlayerInfo) {
         player.changeScoreBy(-2);
     }
 }
+
+function addLetters() {
+    let prevSpace = (10,10);
+    let spacing = 15;
+    let initSpeed = (10,10);
+
+    a.left = prevSpace;
+    a.vy = initSpeed;
+
+    b.left = prevSpace + spacing;
+    prevSpace = b.left;
+    b.vy = initSpeed + 15;
+
+    c.left = prevSpace + spacing;
+    prevSpace = c.left;
+    c.vy = initSpeed + 10;
+
+    d.left = prevSpace + spacing;
+    prevSpace = d.left;
+    d.vy = initSpeed + 20;
+
+    e.left = prevSpace + spacing;
+    prevSpace = e.left;
+    e.vy = initSpeed + 30;
+
+    n.left = prevSpace + spacing;
+    prevSpace = n.left;
+    n.vy = initSpeed + 25;
+
+    o.left = prevSpace + spacing;
+    prevSpace = o.left;
+    o.vy = initSpeed + 10;
+
+    u.left = prevSpace + spacing;
+    prevSpace = u.left;
+    u.vy = initSpeed + 1;
+
+    t.left = prevSpace + spacing;
+    prevSpace = t.left;
+    t.vy = initSpeed + 24;
+
+    h.left = prevSpace + spacing;
+    prevSpace = h.left;
+    h.vy = initSpeed + 40;
+}
+
+//sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Enemy, handleLetterHit);
+
+//TODO This isn't working properly, debugging rn
+// function handleLetterHit(letter: Sprite, ball: Sprite) {
+//     //ashes effect
+//     ball.startEffect(effects.ashes, 150);
+//     letter.startEffect(effects.ashes, 100);
+
+//     if (letter = (b || c || e || n || o || u)) {
+//         letter.image.replace(1, 7);
+//     }
+
+//     if (letter = (a || d || t || h)) {
+//         letter.image.replace(1,2);
+//     }
+
+//     // time out this event so it doesn't retrigger on the same collision
+//     pause(500);
+// }
 
 game.onUpdate(function () {
     const currTime = game.runtime();
