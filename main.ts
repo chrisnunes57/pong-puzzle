@@ -197,14 +197,14 @@ game.onUpdate(function () {
             const scoreLeft = b.x >= screen.width;
 
             // check to see collision on the left
-            if (b.x - b.width / 2 <= PADDING_FROM_WALL*2) {
+            if (b.x - b.width / 2 <= PADDING_FROM_WALL*2 && b.y >= playerOne.y && b.y <= playerOne.y + playerOne.height) {
                 b.vx = b.vx * -1.05;
                 b.x += 1;
                 b.startEffect(effects.ashes, 150);
             }
 
             // check to see collision on the right
-            if (b.x + b.width/2 >= screen.width - PADDING_FROM_WALL*2) {
+            if (b.x + b.width / 2 >= screen.width - PADDING_FROM_WALL * 2 && b.y >= playerTwo.y && b.y <= playerTwo.y + playerTwo.height) {
                 b.vx = b.vx * -1.05;
                 b.x -= 1;
                 b.startEffect(effects.ashes, 150);
@@ -223,6 +223,7 @@ game.onUpdate(function () {
             }
 
             if (scoreLeft || scoreRight) {
+                // here is the logic for when one player loses
                 b.destroy(effects.disintegrate, 500);
                 control.runInParallel(function () {
                     pause(250);
