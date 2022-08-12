@@ -185,6 +185,8 @@ function createPlayer(player: info.PlayerInfo) {
 }
 
 function createBall() {
+    ball.x = screen.width / 2;
+    ball.y = screen.width / 2;
     ball.vy = randint(-20, 20);
     ball.vx = 60 * (Math.percentChance(50) ? 1 : -1);
 }
@@ -193,42 +195,45 @@ game.onUpdate(function () {
     sprites
         .allOfKind(SpriteKind.Enemy)
         .forEach(b => {
-            const scoreRight = b.x < 0;
-            const scoreLeft = b.x >= screen.width;
+            if (b.vx) {
+                const scoreRight = b.x < 0 && game.runtime() > 1000;
+                const scoreLeft = b.x >= screen.width && game.runtime() > 1000;
 
-            // check to see collision on the left
-            if (b.x - b.width / 2 <= PADDING_FROM_WALL*2 && b.y >= playerOne.y && b.y <= playerOne.y + playerOne.height) {
-                b.vx = b.vx * -1.05;
-                b.x += 1;
-                b.startEffect(effects.ashes, 150);
-            }
+                // check to see collision on the left
+                if (b.x - b.width / 2 <= PADDING_FROM_WALL * 2 && b.y >= playerOne.y && b.y <= playerOne.y + playerOne.height) {
+                    b.vx = b.vx * -1.05;
+                    b.x += 1;
+                    b.startEffect(effects.ashes, 150);
+                }
 
-            // check to see collision on the right
-            if (b.x + b.width / 2 >= screen.width - PADDING_FROM_WALL * 2 && b.y >= playerTwo.y && b.y <= playerTwo.y + playerTwo.height) {
-                b.vx = b.vx * -1.05;
-                b.x -= 1;
-                b.startEffect(effects.ashes, 150);
-            }
+                // check to see collision on the right
+                if (b.x + b.width / 2 >= screen.width - PADDING_FROM_WALL * 2 && b.y >= playerTwo.y && b.y <= playerTwo.y + 18) {
+                    b.vx = b.vx * -1.05;
+                    b.x -= 1;
+                    b.startEffect(effects.ashes, 150);
+                }
 
-            if (scoreRight) {
-                info.player2.changeScoreBy(1)
-            } else if (scoreLeft) {
-                info.player1.changeScoreBy(1)
+                if (scoreRight) {
+                    info.player2.changeScoreBy(1)
+                } else if (scoreLeft) {
+                    info.player1.changeScoreBy(1)
+                }
+
+                if (scoreLeft || scoreRight) {
+                    // here is the logic for when one player loses
+                    // b.destroy(effects.disintegrate, 500);
+                    control.runInParallel(function () {
+                        pause(250);
+                        game.reset();
+                        createBall();
+                    });
+                }
             }
 
             if (b.top < 0) {
                 b.vy = Math.abs(b.vy);
             } else if (b.bottom > screen.height) {
                 b.vy = -Math.abs(b.vy);
-            }
-
-            if (scoreLeft || scoreRight) {
-                // here is the logic for when one player loses
-                b.destroy(effects.disintegrate, 500);
-                control.runInParallel(function () {
-                    pause(250);
-                    createBall();
-                });
             }
         }
         );
@@ -292,7 +297,7 @@ function handleCollision (sprite: Sprite, otherSprite: Sprite) {
     pingMessage = !pingMessage;
 
     // time out this event so it doesn't retrigger on the same collision
-    pause(500);
+    pause(100);
 }
 
 function addBall(player: info.PlayerInfo) {
