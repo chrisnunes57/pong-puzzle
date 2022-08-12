@@ -172,6 +172,10 @@ const tLetter = new Letter(tSprite, initSpace + (spacing * 9), initSpeed + 24, 2
 const hSprite = sprites.create(H_IMAGE.clone(), SpriteKind.Enemy);
 const hLetter = new Letter(hSprite, initSpace + (spacing * 10), initSpeed + 40, 2);
 
+// caching some values to avoid extra calculations
+const PADDLE_ONE_RIGHT_SIDE = playerOne.x + playerOne.width / 2;
+const PADDLE_TWO_LEFT_SIDE = playerTwo.x - playerTwo.width / 2;
+
 function createPlayer(player: info.PlayerInfo) {
     const output = sprites.create(image.create(3, 18), SpriteKind.Player);
 
@@ -195,19 +199,19 @@ game.onUpdate(function () {
     sprites
         .allOfKind(SpriteKind.Enemy)
         .forEach(b => {
-            if (b.vx) {
+            if (b === ball) {
                 const scoreRight = b.x < 0 && game.runtime() > 1000;
                 const scoreLeft = b.x >= screen.width && game.runtime() > 1000;
 
                 // check to see collision on the left
-                if (b.x - b.width / 2 <= PADDING_FROM_WALL * 2 && b.y >= playerOne.y && b.y <= playerOne.y + playerOne.height) {
+                if (b.x - b.width / 2 <= PADDLE_ONE_RIGHT_SIDE && b.y - b.height / 2 >= playerOne.y - playerOne.height / 2 && b.y + b.height / 2 <= playerOne.y + playerOne.height / 2) {
                     b.vx = b.vx * -1.05;
-                    b.x += 1;
+                    // b.x = playerOne.x + playerOne.width / 2 + 1;
                     b.startEffect(effects.ashes, 150);
                 }
 
                 // check to see collision on the right
-                if (b.x + b.width / 2 >= screen.width - PADDING_FROM_WALL * 2 && b.y >= playerTwo.y && b.y <= playerTwo.y + 18) {
+                if (b.x + b.width / 2 >= PADDLE_TWO_LEFT_SIDE && b.y - b.height / 2 >= playerTwo.y - playerTwo.height / 2 && b.y + b.height / 2 <= playerTwo.y + playerTwo.height / 2) {
                     b.vx = b.vx * -1.05;
                     b.x -= 1;
                     b.startEffect(effects.ashes, 150);
